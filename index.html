@@ -1,122 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-	<title></title>
-	<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <title>Генератор штрихкодів Code128</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f9f9f9;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 28px;
+      text-align: center;
+      color: #333;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      resize: vertical;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    button {
+      flex: 1;
+      font-size: 18px;
+      padding: 12px 0;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover:not(:disabled) {
+      background: #0056b3;
+    }
+    button:disabled {
+      background: #999;
+      cursor: default;
+    }
+    #barcodeContainer {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 240px 140px;
+      box-sizing: content-box;
+      margin-bottom: 15px;
+      display: none;
+    }
+    svg#barcode {
+      width: 350px !important;
+      height: 120px !important;
+      margin: 0 auto;
+      display: block;
+      background: white;
+      user-select: none;
+    }
+    #counter {
+      font-size: 18px;
+      color: #555;
+      min-height: 24px;
+      text-align: center;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
-	<div class="wrapper">
-		<div class="header">
-			<a href="#" class="logo">
-				<img src="img/elena.png" alt="" class="logo__img">
-			</a>
-			<ul class="nav">
-				<li class="nav__item">
-					<a href="#" class="nav__link">home</a>
-				</li>
-				<li class="nav__item">
-					<a href="#" class="nav__link">services</a>
-				</li>
-				<li class="nav__item">
-					<a href="#" class="nav__link">features</a>
-				</li>
-				<li class="nav__item">
-					<a href="#" class="nav__link">contact</a>
-				</li>
-			</ul>
-			<h2 class="header__caption">
-				have a good day
-			</h2>
-			<h3 class="header__sub-caption">
-				just for you on themforest
-			</h3>
-			<a href="#" class="btn btn_header">get your copy now</a>
-		</div>
-		<main class="main">
-			<div class="services">
-				<div class="services__item ">
-					<img src="img/user-group-copy.png" class="services__img" alt="">
-					<h3 class="services__caption main_caption">profesionals</h3>
-					<p class="services__text">Lorem ipsum dolor sit amet consectetur elit.</p>
-				</div>
-				<div class="services__item">
-					<img src="img/heart.png" class="services__img" alt="">
-					<h3 class="services__caption main_caption">amateurs</h3>
-					<p class="services__text">Lorem ipsum dolor sit amet consectetur elit.</p>
-				</div>
-				<div class="services__item">
-					<img src="img/headset.png" class="services__img" alt="">
-					<h3 class="services__caption main_caption">for everyone</h3>
-					<p class="services__text">Lorem ipsum dolor sit amet consectetur elit.</p>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="benefits">
-				
-				<div class="benefits__item">
-					<img src="img/benefits1.png" alt="">
-					<h3 class="benefits__caption main_caption">Responsive email template</h3>
-					<p class="benefits__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum mollis</p>
-					<a href="#" class="btn btn__main">Read more</a>
-				</div>
-				<div class="benefits__item">
-					<img src="img/benefits2.png" alt="">
-					<h3 class="benefits__caption main_caption">Fully compatible template</h3>
-					<p class="benefits__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum mollis</p>
-					<a href="#" class="btn btn__main">Read more</a>
-				</div>
-			</div>
-			<div class="support">
-				<h3 class="support__caption main_caption">
-				Fully Supported template
-				</h3>
-				<p class="support__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada sodales risus, a adipiscing lorem commodo vitae. Ut semper semper lacus. Suspendisse convallis vel tellus at consectetur. Aenean risus arcu</p>
-				<a href="#" class="btn btn_support">Read more</a>
-			</div>
-			<div class="specials">
-				<div class="specials__item">
-					<img src="img/specials1.png" alt="">
-					<h3 class="specials__caption main_caption">FULLY Layered PSD</h3>
-					<p class="specials__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-					<a href="#" class="btn__specials">Check this out&ensp;></a>
-				</div>
-				<div class="specials__item">
-					<img src="img/specials2.png" alt="">
-					<h3 class="specials__caption main_caption">FUll Compatibility</h3>
-					<p class="specials__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-					<a href="#" class="btn__specials">Check this out&ensp;></a>
-				</div>
-				<div class="specials__item">
-					<img src="img/specials3.png" alt="">
-					<h3 class="specials__caption main_caption">very great modules </h3>
-					<p class="specials__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-					<a href="#" class="btn__specials">Check this out&ensp;></a>
-				</div>
-				
-					
-				</div>
-			<div class="review">
-				<div class="rewiew__item">
-					<h3 class="rewiew__caption-send main_caption">SEND IT NOW</h3>
-					<p class="rewiew__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada sodales risus, a adipiscing lorem. </p>
-					<a href="#" class="btn btn__main">Read more</a>
-				</div>
-				<div class="rewiew__item">
-					<h3 class="rewiew__caption-write main_caption">VERY NICE TO SEE</h3>
-					<p class="rewiew__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada sodales risus, a adipiscing lorem. </p>
-					<a href="#" class="btn btn__main">Read more</a>
-				</div>
-			</div>
-			<div class="unique">
-				<img src="img/unique_img.png" alt="" class="unique__img">
-				<div class="unique__description">
-					<h3 class="unique__caption main_caption">JUST FOR YOU ON THEMEFOREST</h3>
-					<p class="unique__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum mollis risus, in mattis erat convallis egestas.</p>
-					<a href="#" class="btn btn_support unique__btn" >Read more</a>
-				</div>
-			</div>
-			
-		</main>
-	</div>
+
+  <h1>Генератор штрихкодів Code128 (пакетний)</h1>
+
+  <textarea id="codesInput" placeholder="Вставте коди сюди (по одному в рядок)"></textarea>
+  
+  <div class="buttons">
+    <button id="prevBtn" disabled>Назад</button>
+    <button id="nextBtn">Створити перший штрихкод</button>
+  </div>
+  
+  <div id="barcodeContainer">
+    <svg id="barcode"></svg>
+  </div>
+  <div id="counter"></div>
+
+  <script>
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const codesInput = document.getElementById('codesInput');
+    const barcodeSvg = document.getElementById('barcode');
+    const barcodeContainer = document.getElementById('barcodeContainer');
+    const counter = document.getElementById('counter');
+
+    let codes = [];
+    let currentIndex = -1;
+
+    function generateBarcode(code) {
+      JsBarcode(barcodeSvg, code, {
+        format: "code128",
+        lineColor: "#000",
+        width: 3,
+        height: 100,
+        displayValue: true,
+        fontSize: 24,
+        background: "#fff",
+        margin: 20,
+      });
+    }
+
+    function updateCounter() {
+      counter.textContent = `${currentIndex + 1} / ${codes.length}`;
+    }
+
+    function updateButtons() {
+      prevBtn.disabled = currentIndex <= 0;
+      nextBtn.disabled = currentIndex >= codes.length - 1;
+    }
+
+    function updateTextarea() {
+      // Додаємо "✔ " перед вже пройденими кодами
+      let newLines = codes.map((code, i) => {
+        if(i < currentIndex) {
+          if(!code.startsWith("✔ ")) {
+            return "✔ " + code;
+          }
+          return code;
+        }
+        // для поточного і майбутніх — прибираємо "✔ ", якщо є
+        if(code.startsWith("✔ ")) {
+          return code.slice(2);
+        }
+        return code;
+      });
+      codesInput.value = newLines.join('\n');
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (nextBtn.textContent === "Створити перший штрихкод") {
+        const raw = codesInput.value.trim();
+        if (!raw) {
+          alert("Введіть хоча б один код");
+          return;
+        }
+        codes = raw.split('\n').map(c => c.trim()).filter(c => c.length > 0);
+        if (codes.length === 0) {
+          alert("Введіть хоча б один код");
+          return;
+        }
+        currentIndex = 0;
+        codesInput.readOnly = true;  // Забороняємо редагування під час перегляду
+        nextBtn.textContent = "Наступний код";
+        barcodeContainer.style.display = "inline-block";
+        generateBarcode(codes[currentIndex]);
+        updateCounter();
+        updateButtons();
+        updateTextarea();
+      } else {
+        if (currentIndex < codes.length - 1) {
+          currentIndex++;
+          generateBarcode(codes[currentIndex]);
+          updateCounter();
+          updateButtons();
+          updateTextarea();
+        } else {
+          alert("Ви дійшли до кінця списку кодів.");
+          nextBtn.disabled = true;
+        }
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        generateBarcode(codes[currentIndex]);
+        updateCounter();
+        updateButtons();
+        updateTextarea();
+      }
+    });
+  </script>
 </body>
 </html>
