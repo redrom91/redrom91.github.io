@@ -18,10 +18,8 @@
     }
     h1 {
       margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 28px;
+      font-size: 26px;
       text-align: center;
-      color: #333;
     }
     textarea {
       width: 100%;
@@ -30,10 +28,10 @@
       padding: 10px;
       box-sizing: border-box;
       margin-bottom: 20px;
-      resize: vertical;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-family: monospace;
+      resize: vertical;
     }
     .buttons {
       display: flex;
@@ -51,7 +49,6 @@
       border: none;
       border-radius: 6px;
       transition: background-color 0.3s ease;
-      user-select: none;
     }
     button:hover:not(:disabled) {
       background: #0056b3;
@@ -65,42 +62,39 @@
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       padding: 240px 140px;
-      box-sizing: content-box;
       margin-bottom: 15px;
       display: none;
     }
     svg#barcode {
       width: 350px !important;
       height: 120px !important;
-      margin: 0 auto;
       display: block;
-      background: white;
-      user-select: none;
+      margin: 0 auto;
     }
     #counter {
       font-size: 18px;
       color: #555;
       min-height: 24px;
       text-align: center;
-      user-select: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>Генератор штрихкодів Code128 (пакетний)</h1>
+  <h1>Генератор штрихкодів Code128</h1>
 
   <textarea id="codesInput" placeholder="Вставте коди сюди (по одному в рядок)"></textarea>
-  
+
   <div class="buttons">
     <button id="prevBtn" disabled>Назад</button>
     <button id="nextBtn">Створити перший штрихкод</button>
     <button id="resetBtn">Оновити</button>
   </div>
-  
+
   <div id="barcodeContainer">
     <svg id="barcode"></svg>
   </div>
+
   <div id="counter"></div>
 
   <script>
@@ -114,6 +108,20 @@
 
     let codes = [];
     let currentIndex = -1;
+
+    function convertToLatinLayout(str) {
+      const layoutMap = {
+        'а':'f','б':',','в':'d','г':'u','ґ':'`','д':'l','е':'t','є':"'",'ж':';','з':'p',
+        'и':'b','і':'s','ї':']','й':'q','к':'r','л':'k','м':'v','н':'y','о':'j','п':'g',
+        'р':'h','с':'c','т':'n','у':'e','ф':'a','х':'[','ц':'w','ч':'x','ш':'i','щ':'o',
+        'ь':'m','ю':'.','я':'z',
+        'А':'F','Б':'<','В':'D','Г':'U','Ґ':'~','Д':'L','Е':'T','Є':'"','Ж':':','З':'P',
+        'И':'B','І':'S','Ї':'}','Й':'Q','К':'R','Л':'K','М':'V','Н':'Y','О':'J','П':'G',
+        'Р':'H','С':'C','Т':'N','У':'E','Ф':'A','Х':'{','Ц':'W','Ч':'X','Ш':'I','Щ':'O',
+        'Ь':'M','Ю':'>','Я':'Z'
+      };
+      return str.split('').map(char => layoutMap[char] || char).join('');
+    }
 
     function generateBarcode(code) {
       JsBarcode(barcodeSvg, code, {
@@ -138,29 +146,20 @@
     }
 
     function updateTextarea() {
-      let newLines = codes.map((code, i) => {
-        if (i < currentIndex) {
-          if (!code.startsWith("✔ ")) return "✔ " + code;
-          return code;
-        } else {
-          return code.replace(/^✔\s*/, '');
-        }
+      const updated = codes.map((code, i) => {
+        if (i < currentIndex) return code.startsWith("✔ ") ? code : "✔ " + code;
+        return code.replace(/^✔\s*/, '');
       });
-      codesInput.value = newLines.join('\n');
+      codesInput.value = updated.join('\n');
     }
 
     nextBtn.addEventListener('click', () => {
       if (nextBtn.textContent === "Створити перший штрихкод") {
         const raw = codesInput.value.trim();
-        if (!raw) {
-          alert("Введіть хоча б один код");
-          return;
-        }
-        codes = raw.split('\n').map(c => c.trim()).filter(c => c.length > 0);
-        if (codes.length === 0) {
-          alert("Введіть хоча б один код");
-          return;
-        }
+        if (!raw) return alert("Введіть хоча б один код");
+        const convertedRaw = convertToLatinLayout(raw);
+        codes = convertedRaw.split('\n').map(c => c.trim()).filter(c => c.length > 0);
+        if (!codes.length) return alert("Список порожній");
         currentIndex = 0;
         codesInput.readOnly = true;
         nextBtn.textContent = "Наступний код";
@@ -177,7 +176,7 @@
           updateButtons();
           updateTextarea();
         } else {
-          alert("Ви дійшли до кінця списку кодів.");
+          alert("Це останній код.");
           nextBtn.disabled = true;
         }
       }
@@ -206,5 +205,6 @@
       barcodeContainer.style.display = 'none';
     });
   </script>
+
 </body>
 </html>
