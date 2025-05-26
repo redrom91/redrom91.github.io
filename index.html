@@ -102,6 +102,15 @@
   let codes = [];
   let currentIndex = -1;
 
+  document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                nextBtn.click(); // Симулює клік на кнопку "Наступний код"
+            } else if (event.key === 'ArrowLeft') {
+                prevBtn.click(); // Симулює клік на кнопку "Попередній код"
+            }
+  });
+
+
   // Кирилиця → Англійська розкладка (UA/RU → EN)
   function convertToLatinLayout(str) {
     const map = {
